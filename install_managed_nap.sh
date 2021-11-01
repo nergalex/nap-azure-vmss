@@ -32,12 +32,10 @@
 # ------------------------------------- INSTALL NGINX+ App Protect ------------------------------------- #
 # COPY nginx file from repo #
     echo 'COPY file from repo'
-    mkdir -p /root/nginx_bootstrap
-    git clone https://github.com/nergalex/nap-azure-vmss.git /root/nginx_bootstrap
     mkdir -p /etc/nginx/conf.d/
-    cp /root/nginx_bootstrap/nginx-plus-api.conf /etc/nginx/conf.d/
-    cp /root/nginx_bootstrap/custom_log_format.json /etc/nginx/
-    cp /root/nginx_bootstrap/centos.repo /etc/yum.repos.d/
+    cp ./nginx-plus-api.conf /etc/nginx/conf.d/
+    cp ./custom_log_format.json /etc/nginx/
+    cp ./centos.repo /etc/yum.repos.d/
 # FETCH package repo #
     echo 'FETCH package repo'
     export NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
