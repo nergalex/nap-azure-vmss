@@ -1,7 +1,7 @@
 # ------------------------------------- UPGRADE OS + INSTALL packages ------------------------------------- #
 # UPGRADE OS #
-echo 'UPGRADE OS'
-yum -y update && yum -y upgrade
+# echo '*********************** UPGRADE OS ***********************'
+# yum -y update && yum -y upgrade
 
 # INSTALL required packages #
 echo '*********************** INSTALL required packages ***********************'
