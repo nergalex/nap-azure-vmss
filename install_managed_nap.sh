@@ -63,13 +63,18 @@ wget -P /etc/yum.repos.d "https://cs.nginx.com/static/files/app-protect-7.repo"
 # INSTALL NGINX Javascript module needed for APIM #
 echo '*********************** INSTALL NGINX + NGINX Javascript module for APIM ***********************'
 yum -y update --exclude=WALinuxAgent && yum -y install "nginx-plus-${EXTRA_NGINX_PLUS_VERSION}*" "nginx-plus-module-njs-${EXTRA_NGINX_PLUS_VERSION}*"
-# INSTALL NGINX App Protect #
+systemctl enable nginx.service
 
+# INSTALL NGINX App Protect #
 echo '*********************** INSTALL NGINX App Protect ***********************'
 wget -P /etc/yum.repos.d https://cs.nginx.com/static/files/dependencies.repo
 yum -y install app-protect-25+3.671.0 app-protect-attack-signatures
 sed -i "6 a load_module modules/ngx_http_app_protect_module.so;" /etc/nginx/nginx.conf
-systemctl enable nginx.service
+
+# UPDATE App Protect Attack Signatures + Threat Campaigns #
+echo '*********************** UPDATE App Protect Attack Signatures + Threat Campaigns ***********************'
+wget -P /etc/yum.repos.d https://cs.nginx.com/static/files/app-protect-7.repo
+yum -y install app-protect-attack-signatures app-protect-threat-campaigns
 
 # CLEAN #
 echo '*********************** CLEAN ***********************'
