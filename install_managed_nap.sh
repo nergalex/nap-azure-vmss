@@ -83,7 +83,7 @@ rm -f /etc/yum.repos.d/nginx-plus-7.4.repo \
 && gpg --batch --delete-keys ${NGINX_GPGKEY}
 
 
-# ------------------------------------- INSTALL NGINX agent ------------------------------------- #
+# ------------------------------------- INSTALL NGINX Controller agent ------------------------------------- #
 # Controller - GET agent #
 echo '*********************** get Controller agent ***********************'
 curl -k -sS -L https://${EXTRA_NGINX_CONTROLLER_IP}/install/controller-agent > install.sh
