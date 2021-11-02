@@ -1,7 +1,7 @@
 # ------------------------------------- UPGRADE OS + INSTALL packages ------------------------------------- #
 # UPGRADE OS #
 echo '*********************** UPGRADE OS ***********************'
-yum -y update --exclude=WALinuxAgent && yum -y upgrade
+yum -y update --exclude=WALinuxAgent && yum -y upgrade --exclude=WALinuxAgent
 
 # INSTALL required packages #
 echo '*********************** INSTALL required packages ***********************'
@@ -85,3 +85,33 @@ curl -k -sS -L https://${EXTRA_NGINX_CONTROLLER_IP}/install/controller-agent > i
 sed -i 's/^assume_yes=""/assume_yes="-y"/' install.sh
 sed -i 's,-n "${NGINX_GPGKEY}",true,' install.sh
 
+# Controller - SET agent specification #
+echo '*********************** set Controller agent specification ***********************'
+# Variables
+### source: https://github.com/nginxinc/docker-nginx-controller/blob/master/centos/nap/entrypoint.sh
+api_key=$API_KEY
+echo " ---> using api_key = ${api_key}"
+
+HOSTNAME="$(hostname -f)"
+instance_name=${HOSTNAME%\.*\.*\.*\.*\.*}
+echo " ---> using instance_name = ${instance_name}"
+
+controller_api_url="${EXTRA_NGINX_CONTROLLER_IP}:443"
+echo " ---> using controller api url = ${controller_api_url}"
+
+location=${EXTRA_LOCATION}
+echo " ---> using location = ${location}"
+
+instance_group=${EXTRA_VMSS_NAME}
+echo " ---> using instance group = ${instance_group}"
+
+export VERIFY_CERT='False'
+export STORE_UUID='True'
+
+# Controller - RUN agent #
+#echo '*********************** run Controller agent ***********************'
+#bash ./install.sh -y --insecure
+#echo '*********************** run NGINX ***********************'
+#systemctl start nginx
+#echo '*********************** run App Protect agent ***********************'
+#/bin/su -s /bin/bash -c '/opt/app_protect/bin/bd_agent &' nginx
