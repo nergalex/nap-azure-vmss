@@ -89,29 +89,26 @@ sed -i 's,-n "${NGINX_GPGKEY}",true,' install.sh
 echo '*********************** set Controller agent specification ***********************'
 # Variables
 ### source: https://github.com/nginxinc/docker-nginx-controller/blob/master/centos/nap/entrypoint.sh
-api_key=$API_KEY
+export api_key=$API_KEY
 echo " ---> using api_key = ${api_key}"
 
 HOSTNAME="$(hostname -f)"
-instance_name=${HOSTNAME%\.*\.*\.*\.*\.*}
+export instance_name=${HOSTNAME%\.*\.*\.*\.*\.*}
 echo " ---> using instance_name = ${instance_name}"
 
-controller_api_url="${EXTRA_NGINX_CONTROLLER_IP}:443"
-echo " ---> using controller api url = ${controller_api_url}"
-
-location=${EXTRA_LOCATION}
+export location=${EXTRA_LOCATION}
 echo " ---> using location = ${location}"
 
-instance_group=${EXTRA_VMSS_NAME}
+export instance_group=${EXTRA_VMSS_NAME}
 echo " ---> using instance group = ${instance_group}"
 
-export VERIFY_CERT='False'
 export STORE_UUID='True'
+echo " ---> using STORE_UUID = ${STORE_UUID}"
 
 # Controller - RUN agent #
-#echo '*********************** run Controller agent ***********************'
-#bash ./install.sh -y --insecure
-#echo '*********************** run NGINX ***********************'
-#systemctl start nginx
-#echo '*********************** run App Protect agent ***********************'
-#/bin/su -s /bin/bash -c '/opt/app_protect/bin/bd_agent &' nginx
+echo '*********************** run Controller agent ***********************'
+bash ./install.sh -y --insecure --location-name "${location}" --instance-name "${instance_name}" --instance-group "${instance_group}"
+echo '*********************** run NGINX ***********************'
+systemctl start nginx
+echo '*********************** run App Protect agent ***********************'
+/bin/su -s /bin/bash -c '/opt/app_protect/bin/bd_agent &' nginx
