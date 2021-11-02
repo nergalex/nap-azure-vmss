@@ -16,7 +16,7 @@ curl -sk -c cookie.txt -X POST --url "https://${EXTRA_NGINX_CONTROLLER_IP}/api/v
 
 # Controller - Get API key for agent registration #
 echo '***********************  get Controller API key ***********************'
-API_KEY=$(curl -X GET -b cookie.txt -sk -H 'Content-Type: application/json' "https://${EXTRA_NGINX_CONTROLLER_IP}/api/v1/platform/global" | jq .currentStatus.agentSettings.apiKey)
+export API_KEY=$(curl -X GET -b cookie.txt -sk -H 'Content-Type: application/json' "https://${EXTRA_NGINX_CONTROLLER_IP}/api/v1/platform/global" | jq .currentStatus.agentSettings.apiKey)
 echo "${API_KEY}"
 
 # Controller - get license keys #
@@ -89,8 +89,7 @@ sed -i 's,-n "${NGINX_GPGKEY}",true,' install.sh
 echo '*********************** set Controller agent specification ***********************'
 # Variables
 ### source: https://github.com/nginxinc/docker-nginx-controller/blob/master/centos/nap/entrypoint.sh
-export api_key=$API_KEY
-echo " ---> using api_key = ${api_key}"
+echo " ---> using api_key = ${API_KEY}"
 
 HOSTNAME="$(hostname -f)"
 export instance_name=${HOSTNAME%\.*\.*\.*\.*\.*}
