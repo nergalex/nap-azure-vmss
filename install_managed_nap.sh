@@ -1,7 +1,7 @@
 # ------------------------------------- UPGRADE OS + INSTALL packages ------------------------------------- #
 # UPGRADE OS #
-# echo '*********************** UPGRADE OS ***********************'
-# yum -y update && yum -y upgrade
+echo '*********************** UPGRADE OS ***********************'
+yum -y update --exclude=WALinuxAgent && yum -y upgrade
 
 # INSTALL required packages #
 echo '*********************** INSTALL required packages ***********************'
@@ -62,7 +62,7 @@ wget -P /etc/yum.repos.d "https://cs.nginx.com/static/files/app-protect-7.repo"
 
 # INSTALL NGINX Javascript module needed for APIM #
 echo '*********************** INSTALL NGINX + NGINX Javascript module for APIM ***********************'
-yum -y update && yum -y install "nginx-plus-${EXTRA_NGINX_PLUS_VERSION}*" "nginx-plus-module-njs-${EXTRA_NGINX_PLUS_VERSION}*"
+yum -y update --exclude=WALinuxAgent && yum -y install "nginx-plus-${EXTRA_NGINX_PLUS_VERSION}*" "nginx-plus-module-njs-${EXTRA_NGINX_PLUS_VERSION}*"
 # INSTALL NGINX App Protect #
 
 echo '*********************** INSTALL NGINX App Protect ***********************'
