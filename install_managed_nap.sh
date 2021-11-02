@@ -85,19 +85,3 @@ curl -k -sS -L https://${EXTRA_NGINX_CONTROLLER_IP}/install/controller-agent > i
 sed -i 's/^assume_yes=""/assume_yes="-y"/' install.sh
 sed -i 's,-n "${NGINX_GPGKEY}",true,' install.sh
 
-# Controller - SET agent specification #
-echo '*********************** set Controller agent specification ***********************'
-export API_KEY=$API_KEY
-export VERIFY_CERT='False'
-export location_name=${EXTRA_LOCATION}
-HOSTNAME="$(hostname -f)" && export instance_name=${HOSTNAME%\.*\.*\.*\.*\.*}
-export instance_group=${EXTRA_VMSS_NAME}
-export STORE_UUID='True'
-
-# Controller - RUN agent #
-echo '*********************** run Controller agent ***********************'
-bash ./install.sh -y
-echo '*********************** run NGINX ***********************'
-systemctl start nginx
-echo '*********************** run App Protect agent ***********************'
-/bin/su -s /bin/bash -c '/opt/app_protect/bin/bd_agent &' nginx
