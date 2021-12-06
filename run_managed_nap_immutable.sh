@@ -112,10 +112,10 @@ if [ -n "${api_key}" -o -n "${instance_name}" -o -n "${controller_api_url}" -o -
     chown nginx ${nginx_status_conf} > /dev/null 2>&1
 fi
 
-#if ! grep '^api_key.*=[ ]*[[:alnum:]].*' ${agent_conf_file} > /dev/null 2>&1; then
-#    echo "no api_key found in ${agent_conf_file}! exiting."
-#    exit 1
-#fi
+if ! grep '^api_key.*=[ ]*[\"]*[[:alnum:]].*' ${agent_conf_file} > /dev/null 2>&1; then
+    echo "no api_key found in ${agent_conf_file}! exiting."
+    exit 1
+fi
 
 echo "starting controller-agent ..."
 /usr/bin/nginx-controller-agent > /dev/null 2>&1 < /dev/null &
