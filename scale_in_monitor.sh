@@ -3,14 +3,6 @@
 # This script waits for NGINX Controller Agent to stop then unregisters instance from NGINX Controller.
 #
 
-echo " |---> using ENV_CONTROLLER_USERNAME = ${ENV_CONTROLLER_USERNAME}"
-echo " |---> using ENV_CONTROLLER_PASSWORD = ${ENV_CONTROLLER_PASSWORD}"
-echo " |---> using ENV_CONTROLLER_LOCATION = ${ENV_CONTROLLER_LOCATION}"
-echo " |---> using ENV_CONTROLLER_INSTANCE_NAME = ${ENV_CONTROLLER_INSTANCE_NAME}"
-echo " |---> using ENV_CONTROLLER_API_URL = ${ENV_CONTROLLER_API_URL}"
-
-ps aux
-
 handle_term()
 {
     echo "received TERM signal"
@@ -32,7 +24,6 @@ trap 'handle_term' TERM
 
 wait_term()
 {
-    whoami
     echo "waiting for nginx Controller agent to stop..."
     agent_pid=$(pidof nginx-controller-agent)
     echo "agent_pid: ${agent_pid}"
