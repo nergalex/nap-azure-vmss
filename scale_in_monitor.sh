@@ -30,6 +30,7 @@ trap 'handle_term' TERM
 
 wait_term()
 {
+    whoami
     echo "waiting for nginx Controller agent to stop..."
     agent_pid=$(pidof nginx-controller-agent)
     echo "agent_pid: ${agent_pid}"
