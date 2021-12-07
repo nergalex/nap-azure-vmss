@@ -32,6 +32,7 @@ Onboarding
 *****************************************
 Once the VM is started, the VM is onboarded with the script specified as an Extension.
 It could be a Shell or a Cloud Init script that must includes the 2 scripts below.
+
 For example see the Extension `here <https://github.com/nergalex/nap-azure-vmss/blob/master/_files/nginx_managed_by_controller_bootstrapping.jinja2>`_ in Jinja2 format for Ansible
 
 1. Install packages
@@ -58,7 +59,7 @@ Variable                                               Description
 
 2. Monitor Scale In event
 =========================================
-`launch_monitor.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/scale_in_monitor.sh>`_ monitors a Scale In event.
+`scale_in_monitor.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/scale_in_monitor.sh>`_ monitors a Scale In event.
 When a Scale In occurs, this script is responsible to unregister this instance from NGINX Controller
 
 Input variables:
@@ -89,7 +90,7 @@ Scale In
 
     <a href="http://www.youtube.com/watch?v=BMEK_JEi3cc"><img src="http://img.youtube.com/vi/BMEK_JEi3cc/0.jpg" width="600" height="400" title="Create Identity Provider" alt="Create Identity Provider"></a>
 
-Upgrade
+Rolling Upgrade
 =========================================
 
 .. raw:: html
