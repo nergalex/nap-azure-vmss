@@ -33,9 +33,11 @@ wait_term()
     echo "waiting for nginx to stop..."
     nginx_pid=$(pidof "nginx: master process nginx -g daemon off;")
     tail --pid="${nginx_pid}" -f /dev/null
-    echo " UNREGISTER instance from Controller"
+    echo "UNREGISTER instance from Controller"
+    echo "ENV_CONTROLLER_USERNAME: ${ENV_CONTROLLER_USERNAME}"
+    echo "ENV_CONTROLLER_PASSWORD: ${ENV_CONTROLLER_PASSWORD}"
     sh remove.sh
-    echo " UNREGISTER done"
+    echo "UNREGISTER done"
 }
 
 wait_term
