@@ -1,0 +1,42 @@
+{# ------------------------------------- CUSTOM: SET system routes ------------------------------------- #}
+echo 'SET default route via dataplane interface' ; \
+{# CREATE route to On Prem via MGT #}
+    ip route add {{ extra_route_prefix_on_premise }} via {{ extra_gw_management }} dev eth0 ; \
+{# DELETE default route via MGT #}
+    ip route del 0.0.0.0/0 via {{ extra_gw_management }} dev eth0 ; \
+{# CREATE default route via Dataplane #}
+    ip route add 0.0.0.0/0 via {{ extra_gw_dataplane }} dev eth1 ; \
+{# - #}
+{# ------------------------------------- SET variables ------------------------------------- #}
+export EXTRA_NGINX_CONTROLLER_IP={{ extra_nginx_controller_ip }} ; \
+export EXTRA_NGINX_CONTROLLER_USERNAME={{ var_credential.username }} ; \
+export EXTRA_NGINX_CONTROLLER_PASSWORD={{ var_credential.password }} ; \
+export EXTRA_NGINX_PLUS_VERSION={{ extra_nginx_plus_version }} ; \
+export EXTRA_LOCATION={{ extra_location }} ; \
+export EXTRA_VMSS_NAME={{ extra_vmss_name }} ; \
+{# - #}
+{# ------------------------------------- RUN external script ------------------------------------- #}
+yum install -y git ; \
+mkdir -p /root/nginx_onboard ; \
+git clone https://github.com/nergalex/nap-azure-vmss.git /root/nginx_onboard ; \
+cd /root/nginx_onboard && source ./install_managed_nap.sh ; \
+{# - #}
+{# ------------------------------------- SET variables ------------------------------------- #}
+export ENV_CONTROLLER_API_URL={{ extra_nginx_controller_ip }}:443 ; \
+export ENV_CONTROLLER_LOCATION={{ extra_location }} ; \
+export ENV_CONTROLLER_INSTANCE_NAME=${instance_name} ; \
+export ENV_CONTROLLER_USERNAME={{ var_credential.username }} ; \
+export ENV_CONTROLLER_PASSWORD={{ var_credential.password }} ; \
+{# ------------------------------------- RUN external script ------------------------------------- #}
+cd /root/nginx_onboard && sleep 60 && bash ./launch_monitor.sh ; \
+{# - #}
+{# ------------------------------------- CUSTOM: SET monitor route ------------------------------------- #}
+echo 'SET monitor route via dataplane interface' ; \
+mkdir -p /root/route_bootstrap ; \
+echo 'sleep 60' > /root/route_bootstrap/monitor_route.sh ; \
+{# DELETE azure_monitor route via MGT #}
+echo 'ip route del 168.63.129.16/32 via {{ extra_gw_management }} dev eth0' >> /root/route_bootstrap/monitor_route.sh ; \
+{# CREATE azure_monitor route via Dataplane #}
+echo 'ip route add 168.63.129.16/32 via {{ extra_gw_dataplane }} dev eth1' >> /root/route_bootstrap/monitor_route.sh ; \
+echo '********** Route updated **********' >> /root/route_bootstrap/monitor_route.sh ; \
+cd /root/route_bootstrap/ && nohup bash /root/route_bootstrap/monitor_route.sh &
