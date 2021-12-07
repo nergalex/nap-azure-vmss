@@ -37,6 +37,7 @@ For example see the Extension `here <https://github.com/nergalex/nap-azure-vmss/
 1. Install packages
 =========================================
 `install_managed_nap.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/install_managed_nap.sh>`_ install then run:
+
 - NGINX+: Application Load-Balancer
 - App Protect module: Web Application and API Protection
 - last WAF signature update
