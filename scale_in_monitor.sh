@@ -26,7 +26,7 @@ wait_term()
 {
     echo "waiting for nginx Controller agent to stop..."
     agent_pid=$(pidof nginx-controller-agent)
-    echo "agent_pid: ${agent_pid}"
+    echo "monitored agent_pid: ${agent_pid}"
     tail --pid="${agent_pid}" -f /dev/null
     trap - TERM
     kill -QUIT "${nginx_pid}" 2>/dev/null
@@ -43,4 +43,6 @@ wait_term()
 wait_term
 
 echo "controller-agent process has stopped, exiting."
+
+
 
