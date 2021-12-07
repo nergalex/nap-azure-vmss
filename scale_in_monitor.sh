@@ -9,6 +9,8 @@ echo " |---> using ENV_CONTROLLER_LOCATION = ${ENV_CONTROLLER_LOCATION}"
 echo " |---> using ENV_CONTROLLER_INSTANCE_NAME = ${ENV_CONTROLLER_INSTANCE_NAME}"
 echo " |---> using ENV_CONTROLLER_API_URL = ${ENV_CONTROLLER_API_URL}"
 
+ps aux
+
 handle_term()
 {
     echo "received TERM signal"
