@@ -1,4 +1,4 @@
-NGINX Controller, simplified Life Cycle Management
+NGINX Controller make Life Cycle Management simple
 ##############################################################
 
 NGINX Controller offers a simplified **Life Cycle Management** of your NGINX instances across all of your environment:
