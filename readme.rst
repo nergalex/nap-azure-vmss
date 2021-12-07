@@ -5,15 +5,11 @@ This repo provides an implementation of a scaling group of NGINX App Protect ins
 This implementation is Cloud agnostic, same onboarding principles and scripts are reusable on any Cloud (Private, Public).
 InfraOps are free to use the scaling policy offered by their Cloud Service Provider (CSP).
 
-Demo is done on Azure using a VM Scale Set.
-
 .. contents:: Contents
     :local:
 
-Implementation
-*****************************************
 Pre-Requisites
-=========================================
+*****************************************
 - NGINX Controller:
     - hosted on a "Cross Management" / "Shared service" / "Out of Band" zone
     - provisioned with an empty Instance Group and Location
@@ -29,13 +25,30 @@ Pre-Requisites
    :alt: Architecture
 
 Onboarding
-=========================================
-After the bootstrapping phase of a VM image, the next step is to onboard it using a Shell or Cloud Init script.
-The file `here <https://nginxctrl1.eastus2.cloudapp.azure.com>`_ is
-
-
-Deployment
 *****************************************
+After the bootstrapping phase of a VM image,
+CentOS in this example,
+the next phase is to onboard it using a Shell or a Cloud Init script that includes the 2 scripts below.
+For example see the Extension `here <https://github.com/nergalex/nap-azure-vmss/blob/master/_files/nginx_managed_by_controller_bootstrapping.jinja2>`_ in Jinja2 format for Ansible
+
+1. Install packages
+=========================================
+`install_managed_nap.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/install_managed_nap.sh>`_ install then run:
+- NGINX+: Application Load-Balancer
+- App Protect module: Web Application and API Protection
+- last WAF signature update
+- NGINX Controller agent: register VM instance and pull configuration
+
+2. Monitor Scale In event
+=========================================
+`launch_monitor.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/scale_in_monitor.sh>`_ monitors a Scale In event.
+When a Scale In occurs, this script is responsible to unregister this instance from NGINX Controller
+
+Demo
+*****************************************
+
+Demo done on Azure using a VM Scale Set.
+
 
 Common platform
 =========================================
