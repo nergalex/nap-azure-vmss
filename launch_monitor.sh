@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# This script launch the scale in monitor script.
+#
+
+su root -c "ENV_CONTROLLER_USERNAME=${ENV_CONTROLLER_USERNAME} ENV_CONTROLLER_PASSWORD=${ENV_CONTROLLER_PASSWORD} ENV_CONTROLLER_LOCATION=${ENV_CONTROLLER_LOCATION} ENV_CONTROLLER_INSTANCE_NAME=${ENV_CONTROLLER_INSTANCE_NAME} ENV_CONTROLLER_API_URL=${ENV_CONTROLLER_API_URL} nohup bash ./scale_in_monitor.sh > /var/log/bootstrap/scale_in_monitor.log 2>&1 &"
+
+
