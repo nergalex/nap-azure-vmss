@@ -3,11 +3,16 @@ NGINX Controller makes Life Cycle Management simple
 
 NGINX Controller offers a simplified **Life Cycle Management** of your NGINX instances across all of your environment:
 
-- **Auto Scaling**: during Scale In / Scale Out, the instance register / unregister to NGINX Controller
-- **Upgrade**: Use the native feature ``rolling upgrade`` of your Cloud Service Provider
-- **Source Of Truth**: a NGINX instance is bootstrapped from a standard Linux VM image, all of configurations are pushed from NGINX Controller
-- **Cloud agnostic**: same principles and onboarding scripts are reusable on any Cloud (Private, Public)
-- **Native Scaling Policy**: InfraOps are free to use the scaling policy offered by their Cloud Service Provider (CSP).
+- **Auto Scaling**
+    during Scale In / Scale Out, the instance register / unregister to NGINX Controller
+- **Upgrade**
+    Use the native feature ``rolling upgrade`` of your Cloud Service Provider
+- **Source Of Truth**
+    a NGINX instance is bootstrapped from a standard Linux VM image, all of configurations are pushed from NGINX Controller
+- **Cloud agnostic**
+    same principles and onboarding scripts are reusable on any Cloud (Private, Public)
+- **Native Scaling Policy**
+    InfraOps are free to use the scaling policy offered by their Cloud Service Provider (CSP).
 
 This repo provides an implementation of a scaling group of NGINX App Protect instances managed by NGINX Controller.
 
