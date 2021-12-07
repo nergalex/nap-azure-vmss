@@ -16,6 +16,8 @@ NGINX Controller offers a simplified **Life Cycle Management** of your NGINX ins
 
 This repo provides an implementation of a scaling group of NGINX App Protect instances managed by NGINX Controller.
 
+--------------------------------------------------------------------------------------------------------------------
+
 .. contents:: Contents
     :local:
 
