@@ -1,7 +1,8 @@
-NGINX App Protect + Controller | Life Cycle Management
+NGINX Controller, simplified Life Cycle Management
 ##############################################################
 
-NGINX Controller offers a simplified Life Cycle Management of your NGINX instances across all of your environment:
+NGINX Controller offers a simplified **Life Cycle Management** of your NGINX instances across all of your environment:
+
 - **Auto Scaling**: during Scale In / Scale Out, the instance register / unregister to NGINX Controller
 - **Upgrade**: Use the native feature ``rolling upgrade`` of your Cloud Service Provider
 - **Source Of Truth**: a NGINX instance is bootstrapped from a standard Linux VM image, all of configurations are pushed from NGINX Controller
@@ -20,9 +21,7 @@ Pre-Requisites
     - provisioned with an empty Instance Group and Location
     - Services can be already attached on this Instance Group. For example on another Region or CSP
 
-- VM Scale Set is created with 2 Network Interfaces Cards:
-    - Management Plane (eth0)
-    - Data Plane (eth1) with its Primary IP as a pool member of an Azure External Load Balancer
+- VM Scale Set. A CentOS image is used in this example.
 
 .. image:: ./_pictures/architecture.png
    :align: center
@@ -31,9 +30,8 @@ Pre-Requisites
 
 Onboarding
 *****************************************
-After the bootstrapping phase of a VM image,
-CentOS in this example,
-the next phase is to onboard it using a Shell or a Cloud Init script that includes the 2 scripts below.
+Once the VM is started, the VM is onboarded with the script specified as an Extension.
+It could be a Shell or a Cloud Init script that must includes the 2 scripts below.
 For example see the Extension `here <https://github.com/nergalex/nap-azure-vmss/blob/master/_files/nginx_managed_by_controller_bootstrapping.jinja2>`_ in Jinja2 format for Ansible
 
 1. Install packages
