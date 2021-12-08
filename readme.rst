@@ -87,19 +87,16 @@ Scale Out
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=BMEK_JEi3cc"><img src="http://img.youtube.com/vi/BMEK_JEi3cc/0.jpg" width="600" height="400" title="Create Identity Provider" alt="Create Identity Provider"></a>
-
+    <a href="http://www.youtube.com/watch?v=Ol4CCxI0uVY"><img src="http://img.youtube.com/vi/Ol4CCxI0uVY/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Scale Out" alt="VMSS + NGINX Controller | Scale Out"></a>
 
 Scale In
 =========================================
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=BMEK_JEi3cc"><img src="http://img.youtube.com/vi/BMEK_JEi3cc/0.jpg" width="600" height="400" title="Create Identity Provider" alt="Create Identity Provider"></a>
+    <a href="http://www.youtube.com/watch?v=P005gt9eAg0"><img src="http://img.youtube.com/vi/P005gt9eAg0/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Scale In" alt="VMSS + NGINX Controller | Scale In"></a>
 
 Rolling Upgrade
 =========================================
 
-.. raw:: html
-
-    <a href="http://www.youtube.com/watch?v=BMEK_JEi3cc"><img src="http://img.youtube.com/vi/BMEK_JEi3cc/0.jpg" width="600" height="400" title="Create Identity Provider" alt="Create Identity Provider"></a>
+ToDo
