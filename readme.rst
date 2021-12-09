@@ -92,7 +92,7 @@ Cause
 =========================================
 A Web Browser opens up to 15 TCP sessions to a remote Domain service
 and keep it them alive in order to re-use then to send further HTTP transactions.
-When a ``Scale In`` or ``reimage`` operation occurs, NGINX process received a SIG_TERM signal and all of NGINX workers (1 per vCPU) shutdown gracefully: current HTTP transactions are drained and then TCP sessions closed:
+When a ``Scale In`` or ``reimage`` operation occurs, NGINX process received a SIG_TERM signal and all of NGINX workers are shutdown gracefully: current HTTP transactions are drained and then TCP sessions are closed:
 
 As shown in the video `here <https://github.com/nergalex/nap-azure-vmss#upgrade-reimage>`_ , a Wireshark captures on the user's PC.
 The picture below shows a ``reimage`` operation that occured at second #7.
@@ -173,6 +173,7 @@ Auto-Scaling implementation
 Architecture
 =========================================
 - NGINX Controller:
+
     - hosted on a "Cross Management" / "Shared service" / "Out of Band" zone
     - provisioned with an empty Instance Group and Location
     - Services can be already attached on this Instance Group. For example on another Region or CSP
