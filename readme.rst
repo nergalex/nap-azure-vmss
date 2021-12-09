@@ -94,8 +94,7 @@ A Web Browser opens up to 15 TCP sessions to a remote Domain service
 and keep it them alive in order to re-use then to send further HTTP transactions.
 When a ``Scale In`` or ``reimage`` operation occurs, NGINX process received a SIG_TERM signal and all of NGINX workers are shutdown gracefully: current HTTP transactions are drained and then TCP sessions are closed.
 
-As shown in the video `here <https://github.com/nergalex/nap-azure-vmss#upgrade-reimage>`_ , a Wireshark captures on the user's PC.
-The picture below shows a ``reimage`` operation that occured at second #7.
+The picture below shows a ``reimage`` operation that occurs at second #7.
 
 .. image:: ./_pictures/capture_nginx_drain.png
    :align: center
