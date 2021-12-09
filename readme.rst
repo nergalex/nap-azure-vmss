@@ -137,14 +137,16 @@ Web Browser will switch automatically to the other Public IP after 1s. Acceptabl
 
 Proof
 =========================================
-- `F5 Cloud Services DNS LB <https://www.f5.com/fr_fr/products/ways-to-deploy/cloud-services/dns-cloud-service>`_ hosts ``webhook.f5cloudbuilder.dev`` A record that returns 2 Public IPs: 52.167.72.28 and 52.179.176.230
-- Web Browser resolves ``webhook.f5cloudbuilder.dev`` and keeps it in DNS Cache
+- `F5 Cloud Services DNS LB <https://www.f5.com/fr_fr/products/ways-to-deploy/cloud-services/dns-cloud-service>`_ hosts ``webhook.f5cloudbuilder.dev`` A record that returns 2 Public IPs:
+    - 52.167.72.28
+    - 52.179.176.230
 
 .. image:: ./_pictures/dns_lb_record.png
    :align: center
    :width: 600
    :alt: DNS LB record
 
+- Web Browser resolves ``webhook.f5cloudbuilder.dev`` and keeps it in DNS Cache
     - Because DNS Cache TTL in Chrome is 60s minimum (`here <https://source.chromium.org/chromium/chromium/src/+/master:net/dns/host_resolver_manager.cc;l=122?q=kCacheEntryTTLSeconds%20&ss=chromium%2Fchromium%2Fsrc&originalUrl=https:%2F%2Fcs.chromium.org%2F>`_), TTL of A record must be set at least to 60s
 
 - Web Browser makes TCP connexions only to IP ``52.167.72.28``
