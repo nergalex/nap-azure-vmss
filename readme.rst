@@ -171,23 +171,17 @@ Auto-Scaling implementation
 
 Architecture
 =========================================
-- NGINX Controller:
-
-    - hosted on a "Cross Management" / "Shared service" / "Out of Band" zone
-    - provisioned with an empty Instance Group and Location
-    - Services can be already attached on this Instance Group. For example on another Region or CSP
-
-- VM Scale Set and an External Azure Load Balancer to publish a Public IP
+- Components:
+    - A NGINX Controller hosted in a "Cross Management" / "Shared service" / "Out of Band" zone
+    - A VM Scale Set of NGINX App Protect instances
+    - An External Azure Load Balancer to publish a Public IP
 
 .. image:: ./_pictures/architecture.png
    :align: center
    :width: 1000
    :alt: Architecture
 
-Once the VM is started, the VM is onboarded with the script specified as an Extension.
-It could be a Shell or a Cloud Init script that must includes the 2 scripts below.
-
-For example see the Extension `here <https://github.com/nergalex/nap-azure-vmss/blob/master/_files/nginx_managed_by_controller_bootstrapping.jinja2>`_ in Jinja2 format for Ansible
+Once a VM is started, VM is onboarded using an Extension: Shell or Cloud Init commands that must includes to run the 2 scripts below. For example see the Extension `here <https://github.com/nergalex/nap-azure-vmss/blob/master/_files/nginx_managed_by_controller_bootstrapping.jinja2>`_ in Jinja2 format for Ansible
 
 Script 1 - Install packages
 =========================================
