@@ -14,14 +14,41 @@ NGINX Controller offers a simplified **Life Cycle Management** of your NGINX ins
 - **Native Scaling Policy**
     InfraOps are free to use the scaling policy offered by their Cloud Service Provider (CSP).
 
-This repo provides an implementation of a scaling group of NGINX App Protect instances managed by NGINX Controller.
+This repo provides a demo of a scaling group implementation using NGINX App Protect instances managed by NGINX Controller.
+
+Last chapter warns you to take in consideration resiliency and DNS LB in order to enhance User Experience.
 
 --------------------------------------------------------------------------------------------------------------------
 
 .. contents:: Contents
     :local:
 
-Mutable vs Immutable
+Demo video
+*****************************************
+Demo done on Azure using a VM Scale Set.
+
+Scale Out
+=========================================
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=Ol4CCxI0uVY"><img src="http://img.youtube.com/vi/Ol4CCxI0uVY/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Scale Out" alt="VMSS + NGINX Controller | Scale Out"></a>
+
+Scale In
+=========================================
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=P005gt9eAg0"><img src="http://img.youtube.com/vi/P005gt9eAg0/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Scale In" alt="VMSS + NGINX Controller | Scale In"></a>
+
+Upgrade / Reimage
+=========================================
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=Zr8UBIC-UHw"><img src="http://img.youtube.com/vi/Zr8UBIC-UHw/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Reimage" alt="VMSS + NGINX Controller | Reimage"></a>
+
+Strategy - Mutable vs Immutable
 *****************************************
 
 When an new VM instance is bootstraped, this instance is up to date:
@@ -49,8 +76,8 @@ Mutable = Upgrade
 Upgrading will **apply any changes** that were applied to the scaleset as a whole.
 So for example, if you apply a custom script extension to VMSS1 you need to update the VMSS instances in order for that custom script to actually be applied.
 
-Solution to do not impact User Experience during a Scale In or reimage operation
-================================================================================
+Architecture - Resiliency and DNS LB
+********************************************************************************
 During a *Scale In* or *reimage* operation,
 an impact on User Experience exists if:
 
@@ -58,11 +85,11 @@ an impact on User Experience exists if:
     - **no Global Load Balancing** exists across regions or multi-cloud.
 
 Symptom
-*****************************************
+=========================================
 A user or a consumer have no access to the service during few seconds with no notification
 
 Cause
-*****************************************
+=========================================
 A Web Browser opens up to 15 TCP sessions to a remote Domain service
 and keep it them alive in order to re-use then to send further HTTP transactions.
 When a ``Scale In`` or ``reimage`` operation occurs, NGINX process received a SIG_TERM signal and all of NGINX workers (1 per vCPU) shutdown gracefully: current HTTP transactions are drained and then TCP sessions closed:
@@ -88,37 +115,78 @@ In that case, further TCP session initiated by the browser will be stuck up to 1
 
 After 15s, External Azure Load Balancer chose another pool member. Then the service is up again for this user.
 
+Source: full PCAP capture with no DNS LB `here <https://github.com/nergalex/nap-azure-vmss/_files/Azure_LB_downtime.pcapng>`_
+
 Solution
+=========================================
+
+Do not persist?
+**No**, it's not a solution,
+persistence is useful for :
+    - Web Application Firewall security features that track user sessions (CSRF, DeviceID, JS injection, cookie...)
+    - troubleshooting purpose
+
+**DNS Load Balancing**.
+Use a DNS LB record to Load-Balance traffic across 2 regions or multi-cloud.
+2 Public IPs are returned for your DNS domain.
+If a TCP session on one Public IP returns a RST,
+Web Browser will switch automatically to the other Public IP after 1s. Acceptable impact for a good User Experience, well done! :o)
+
+Proof
+=========================================
+- `F5 Cloud Services DNS LB <https://www.f5.com/fr_fr/products/ways-to-deploy/cloud-services/dns-cloud-service>`_ hosts ``webhook.f5cloudbuilder.dev`` A record that returns 2 Public IPs: 52.167.72.28 and 52.179.176.230
+- Web Browser resolves ``webhook.f5cloudbuilder.dev`` and keeps it in DNS Cache
+
+.. image:: ./_pictures/dns_lb_record.png
+   :align: center
+   :width: 600
+   :alt: DNS LB record
+
+    - Because DNS Cache TTL in Chrome is 60s minimum (`here <https://source.chromium.org/chromium/chromium/src/+/master:net/dns/host_resolver_manager.cc;l=122?q=kCacheEntryTTLSeconds%20&ss=chromium%2Fchromium%2Fsrc&originalUrl=https:%2F%2Fcs.chromium.org%2F>`_), TTL of A record must be set at least to 60s
+
+- Web Browser makes TCP connexions only to IP ``52.167.72.28``
+
+.. image:: ./_pictures/capture_dns_lb_tcp_ip1.png
+   :align: center
+   :width: 600
+   :alt: Connexion to IP 1
+
+- At second #13 in the picture bellow, NGINX VM is shutdown and NGINX closes all TCP connexions gracefully
+- At second #17 Web Browser opens new TCP connexions to the same Public IP ``52.167.72.28`` and Azure Load Balancer responds with TCP RST due to persistence linked to a NGINX VM shutdown
+- At second #18 Web Browser opens new TCP connexions to the second Public IP ``52.179.176.230``
+
+.. image:: ./_pictures/capture_dns_lb_tcp_ip_2.png
+   :align: center
+   :width: 600
+   :alt: Connexion to IP 2
+
+Source: full PCAP capture with no DNS LB `here <https://github.com/nergalex/nap-azure-vmss/_files/DNS_LB_TCP_failure_Chrome.pcapng>`_
+
+Auto-Scaling implementation
 *****************************************
 
-1. **DNS Load Balancing**. Load-Balance traffic across 2 regions or multi-cloud. 2 Public IPs are returned during DNS resolution. If a TCP session on one Public IP returns a RST, Web Browser will switch automatically to the other Public IP. No impact on User Experience, well done! :o)
-2. Do not persist? **No**, it's not a solution, persistency is useful for troubleshooting purpose and Web Application Firewall security features that track user sessions (CSRF, DeviceID, JS injection, cookie...).
-
-
-Pre-Requisites
-*****************************************
+Architecture
+=========================================
 - NGINX Controller:
     - hosted on a "Cross Management" / "Shared service" / "Out of Band" zone
     - provisioned with an empty Instance Group and Location
     - Services can be already attached on this Instance Group. For example on another Region or CSP
 
-- VM Scale Set. A CentOS image is used in this example.
+- VM Scale Set and an External Azure Load Balancer to publish a Public IP
 
 .. image:: ./_pictures/architecture.png
    :align: center
    :width: 1000
    :alt: Architecture
 
-Onboarding
-*****************************************
 Once the VM is started, the VM is onboarded with the script specified as an Extension.
 It could be a Shell or a Cloud Init script that must includes the 2 scripts below.
 
 For example see the Extension `here <https://github.com/nergalex/nap-azure-vmss/blob/master/_files/nginx_managed_by_controller_bootstrapping.jinja2>`_ in Jinja2 format for Ansible
 
-1. Install packages
+Script 1 - Install packages
 =========================================
-`install_managed_nap.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/install_managed_nap.sh>`_ install then run:
+`install_managed_nap.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/install_managed_nap.sh>`_ install and run:
 
 - NGINX+: Application Load-Balancer
 - App Protect module: Web Application and API Protection
@@ -138,9 +206,9 @@ Variable                                               Description
 ``EXTRA_VMSS_NAME``                                    VM Scale Set name, same as the Instance Group created on NGINX Controller
 =====================================================  =======================================================================================================
 
-2. Monitor Scale In event
+Script 2 - Monitor 'Scale In' event
 =========================================
-`scale_in_monitor.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/scale_in_monitor.sh>`_ monitors a Scale In event.
+`scale_in_monitor.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/scale_in_monitor.sh>`_ monitors a *Scale In* event.
 When a Scale In occurs, this script is responsible to unregister this instance from NGINX Controller
 
 Input variables:
@@ -152,27 +220,3 @@ Variable                                               Description
 ``ENV_CONTROLLER_PASSWORD``                            NGINX Controller user password
 =====================================================  =======================================================================================================
 
-Demo video
-*****************************************
-Demo done on Azure using a VM Scale Set.
-
-Scale Out
-=========================================
-
-.. raw:: html
-
-    <a href="http://www.youtube.com/watch?v=Ol4CCxI0uVY"><img src="http://img.youtube.com/vi/Ol4CCxI0uVY/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Scale Out" alt="VMSS + NGINX Controller | Scale Out"></a>
-
-Scale In
-=========================================
-
-.. raw:: html
-
-    <a href="http://www.youtube.com/watch?v=P005gt9eAg0"><img src="http://img.youtube.com/vi/P005gt9eAg0/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Scale In" alt="VMSS + NGINX Controller | Scale In"></a>
-
-Upgrade / Reimage
-=========================================
-
-.. raw:: html
-
-    <a href="http://www.youtube.com/watch?v=Zr8UBIC-UHw"><img src="http://img.youtube.com/vi/Zr8UBIC-UHw/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Reimage" alt="VMSS + NGINX Controller | Reimage"></a>
