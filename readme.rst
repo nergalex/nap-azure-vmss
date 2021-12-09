@@ -138,8 +138,8 @@ Proof
 =========================================
 - `F5 Cloud Services DNS LB <https://www.f5.com/fr_fr/products/ways-to-deploy/cloud-services/dns-cloud-service>`_ hosts ``webhook.f5cloudbuilder.dev`` A record that returns 2 Public IPs:
 
-    - 52.167.72.28
-    - 52.179.176.230
+    52.167.72.28
+    52.179.176.230
 
 .. image:: ./_pictures/dns_lb_record.png
    :align: center
