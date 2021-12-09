@@ -91,7 +91,7 @@ A user or a consumer have no access to the service during few seconds with no no
 Cause
 =========================================
 A Web Browser opens up to 15 TCP sessions to a remote Domain service
-and keep it them alive in order to re-use then to send further HTTP transactions.
+and keeps it them alive in order to re-use then to send further HTTP transactions.
 When a ``Scale In`` or ``reimage`` operation occurs, NGINX process received a SIG_TERM signal and all of NGINX workers are shutdown gracefully: current HTTP transactions are drained and then TCP sessions are closed.
 
 The picture below shows a ``reimage`` operation that occurs at second #7.
