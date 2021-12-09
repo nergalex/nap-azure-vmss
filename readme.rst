@@ -128,7 +128,8 @@ persistence is useful for :
     - Web Application Firewall security features that track user sessions (CSRF, DeviceID, JS injection, cookie...)
     - troubleshooting purpose
 
-**DNS Load Balancing**.
+**DNS Load Balancing**
+
 Use a DNS LB record to Load-Balance traffic across 2 regions or multi-cloud.
 2 Public IPs are returned for your DNS domain.
 If a TCP session on one Public IP returns a RST,
