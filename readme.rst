@@ -49,6 +49,52 @@ Mutable = Upgrade
 Upgrading will **apply any changes** that were applied to the scaleset as a whole.
 So for example, if you apply a custom script extension to VMSS1 you need to update the VMSS instances in order for that custom script to actually be applied.
 
+Solution to do not impact User Experience during a Scale In or reimage operation
+================================================================================
+During a *Scale In* or *reimage* operation,
+an impact on User Experience exists if:
+
+    - **persistency** is set on the downstream Load Balancer
+    - **no Global Load Balancing** exists across regions or multi-cloud.
+
+Symptom
+*****************************************
+A user or a consumer have no access to the service during few seconds with no notification
+
+Cause
+*****************************************
+A Web Browser opens up to 15 TCP sessions to a remote Domain service
+and keep it them alive in order to re-use then to send further HTTP transactions.
+When a ``Scale In`` or ``reimage`` operation occurs, NGINX process received a SIG_TERM signal and all of NGINX workers (1 per vCPU) shutdown gracefully: current HTTP transactions are drained and then TCP sessions closed:
+
+As shown in the video `here <https://github.com/nergalex/nap-azure-vmss#upgrade-reimage>`_ , a Wireshark captures on the user's PC.
+The picture below shows a ``reimage`` operation that occured at second #7.
+
+.. image:: ./_pictures/capture_nginx_drain.png
+   :align: center
+   :width: 800
+   :alt: NGINX drains transactions
+
+However, the External Azure Load Balancer is configured with:
+    - a `Persistency <https://docs.microsoft.com/en-us/azure/load-balancer/distribution-mode-concepts>`_
+    - a health probe interval of 5s
+    - a unhealthy threshold of 2
+In that case, further TCP session initiated by the browser will be stuck up to 15s to the same VM instance... that is down.
+
+.. image:: ./_pictures/capture_persist.png
+   :align: center
+   :width: 800
+   :alt: ALB persists
+
+After 15s, External Azure Load Balancer chose another pool member. Then the service is up again for this user.
+
+Solution
+*****************************************
+
+1. **DNS Load Balancing**. Load-Balance traffic across 2 regions or multi-cloud. 2 Public IPs are returned during DNS resolution. If a TCP session on one Public IP returns a RST, Web Browser will switch automatically to the other Public IP. No impact on User Experience, well done! :o)
+2. Do not persist? **No**, it's not a solution, persistency is useful for troubleshooting purpose and Web Application Firewall security features that track user sessions (CSRF, DeviceID, JS injection, cookie...).
+
+
 Pre-Requisites
 *****************************************
 - NGINX Controller:
@@ -106,7 +152,7 @@ Variable                                               Description
 ``ENV_CONTROLLER_PASSWORD``                            NGINX Controller user password
 =====================================================  =======================================================================================================
 
-Demo
+Demo video
 *****************************************
 Demo done on Azure using a VM Scale Set.
 
