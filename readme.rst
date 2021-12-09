@@ -134,7 +134,7 @@ Use a DNS LB record to Load-Balance traffic across 2 regions or multi-cloud.
 If a TCP session on one Public IP returns a RST,
 Web Browser will switch automatically to the other Public IP after 1s. Acceptable impact for a good User Experience, well done! :o)
 
-Proof
+DNS LB - Proof
 =========================================
 - `F5 Cloud Services DNS LB <https://www.f5.com/fr_fr/products/ways-to-deploy/cloud-services/dns-cloud-service>`_ hosts ``webhook.f5cloudbuilder.dev`` A record that returns 2 Public IPs:
 
