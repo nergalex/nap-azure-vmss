@@ -103,10 +103,12 @@ The picture below shows a ``reimage`` operation that occured at second #7.
    :alt: NGINX drains transactions
 
 However, the External Azure Load Balancer is configured with:
+
     - a `Persistency <https://docs.microsoft.com/en-us/azure/load-balancer/distribution-mode-concepts>`_
     - a health probe interval of 5s
     - a unhealthy threshold of 2
-In that case, further TCP session initiated by the browser will be stuck up to 15s to the same VM instance... that is down.
+
+In that case, further TCP sessions initiated from the browser will be stuck up to 15s to the same VM instance... that is unavailable.
 
 .. image:: ./_pictures/capture_persist.png
    :align: center
@@ -115,7 +117,7 @@ In that case, further TCP session initiated by the browser will be stuck up to 1
 
 After 15s, External Azure Load Balancer chose another pool member. Then the service is up again for this user.
 
-Source: full PCAP capture with no DNS LB `here <https://github.com/nergalex/nap-azure-vmss/_files/Azure_LB_downtime.pcapng>`_
+    *Source*: full PCAP capture with no DNS LB `here <https://github.com/nergalex/nap-azure-vmss/_files/Azure_LB_downtime.pcapng>`_
 
 Solution
 =========================================
@@ -160,7 +162,7 @@ Proof
    :width: 600
    :alt: Connexion to IP 2
 
-Source: full PCAP capture with no DNS LB `here <https://github.com/nergalex/nap-azure-vmss/_files/DNS_LB_TCP_failure_Chrome.pcapng>`_
+    *Source*: full PCAP capture with no DNS LB `here <https://github.com/nergalex/nap-azure-vmss/_files/DNS_LB_TCP_failure_Chrome.pcapng>`_
 
 Auto-Scaling implementation
 *****************************************
