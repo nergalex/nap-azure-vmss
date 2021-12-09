@@ -181,7 +181,7 @@ Architecture
    :width: 1000
    :alt: Architecture
 
-Once a VM is started, VM is onboarded using an Extension: Shell or Cloud Init commands that must includes to run the 2 scripts below. For example see the Extension `here <https://github.com/nergalex/nap-azure-vmss/blob/master/_files/nginx_managed_by_controller_bootstrapping.jinja2>`_ in Jinja2 format for Ansible
+Once a VM is started, VM is onboarded using an Extension: Shell or Cloud Init commands that must includes to run the 2 scripts below. Example of Extension `here <https://github.com/nergalex/nap-azure-vmss/blob/master/_files/nginx_managed_by_controller_bootstrapping.jinja2>`_ in Jinja2 format for Ansible
 
 Script 1 - Install packages
 =========================================
