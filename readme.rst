@@ -142,7 +142,7 @@ Proof
 
 .. image:: ./_pictures/dns_lb_record.png
    :align: center
-   :width: 600
+   :width: 500
    :alt: DNS LB record
 
 - Web Browser resolves ``webhook.f5cloudbuilder.dev`` and keeps it in DNS Cache
