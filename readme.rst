@@ -111,7 +111,7 @@ In that case, further TCP sessions initiated from the browser will be stuck up t
 
 .. image:: ./_pictures/capture_persist.png
    :align: center
-   :width: 800
+   :width: 900
    :alt: ALB persists
 
 After 15s, External Azure Load Balancer chose another pool member. Then the service is up again for this user.
@@ -152,7 +152,7 @@ Proof
 
 .. image:: ./_pictures/capture_dns_lb_tcp_ip1.png
    :align: center
-   :width: 600
+   :width: 900
    :alt: Connexion to IP 1
 
 - At second #13 in the picture bellow, NGINX VM is shutdown and NGINX closes all TCP connexions gracefully
@@ -161,7 +161,7 @@ Proof
 
 .. image:: ./_pictures/capture_dns_lb_tcp_ip_2.png
    :align: center
-   :width: 600
+   :width: 900
    :alt: Connexion to IP 2
 
 *Source*: full PCAP capture with DNS LB `here <https://github.com/nergalex/nap-azure-vmss/_files/DNS_LB_TCP_failure_Chrome.pcapng>`_
