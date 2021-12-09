@@ -5,8 +5,8 @@ NGINX Controller offers a simplified **Life Cycle Management** of your NGINX ins
 
 - **Auto Scaling**
     during Scale In / Scale Out, the instance register / unregister to NGINX Controller
-- **Upgrade**
-    Use the native feature ``rolling upgrade`` of your Cloud Service Provider
+- **Up to date OS, software and Security signatures**
+    use the native feature ``reimage`` or ``rolling upgrade`` of your Cloud Service Provider
 - **Source Of Truth**
     a NGINX instance is bootstrapped from a standard Linux VM image, all of configurations are pushed from NGINX Controller
 - **Cloud agnostic**
@@ -20,6 +20,34 @@ This repo provides an implementation of a scaling group of NGINX App Protect ins
 
 .. contents:: Contents
     :local:
+
+Mutable vs Immutable
+*****************************************
+
+When an new VM instance is bootstraped, this instance is up to date:
+
+    - **OS** packages
+    - **Software**: NGINX Plus, NGINX App Protect and NGINX Controller agent
+    - **Security** signatures
+
+Then this instance retrieve his configuration from NGINX Controller.
+Therefore NGINX Controller is the *Source of Truth* for all of your managed NGINX instances.
+
+In order to upgrade your cluster, the *immutable* approach is recommended: destroy & recreate your VM instances.
+As done on **Kubernetes**, the *immutable* approach is more simpler and safer than the mutable approach that will apply changes.
+
+How to do that on Azure VM Scale Set?
+
+Immutable = Reimage
+=========================================
+If you select ``reimage``,
+it will remove the VMSS instance and replace it with a brand new one.
+This can be used if you are having issues or need to upgrade per instance, that will **delete it and redeploy it up to date**.
+
+Mutable = Upgrade
+=========================================
+Upgrading will **apply any changes** that were applied to the scaleset as a whole.
+So for example, if you apply a custom script extension to VMSS1 you need to update the VMSS instances in order for that custom script to actually be applied.
 
 Pre-Requisites
 *****************************************
@@ -96,7 +124,9 @@ Scale In
 
     <a href="http://www.youtube.com/watch?v=P005gt9eAg0"><img src="http://img.youtube.com/vi/P005gt9eAg0/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Scale In" alt="VMSS + NGINX Controller | Scale In"></a>
 
-Rolling Upgrade
+Upgrade / Reimage
 =========================================
 
-ToDo
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=Zr8UBIC-UHw"><img src="http://img.youtube.com/vi/Zr8UBIC-UHw/0.jpg" width="600" height="400" title="VMSS + NGINX Controller | Reimage" alt="VMSS + NGINX Controller | Reimage"></a>
