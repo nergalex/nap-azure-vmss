@@ -164,7 +164,7 @@ Proof
    :width: 600
    :alt: Connexion to IP 2
 
-    *Source*: full PCAP capture with no DNS LB `here <https://github.com/nergalex/nap-azure-vmss/_files/DNS_LB_TCP_failure_Chrome.pcapng>`_
+*Source*: full PCAP capture with no DNS LB `here <https://github.com/nergalex/nap-azure-vmss/_files/DNS_LB_TCP_failure_Chrome.pcapng>`_
 
 Auto-Scaling implementation
 *****************************************
