@@ -215,7 +215,14 @@ Input variables:
 =====================================================  =======================================================================================================
 Variable                                               Description
 =====================================================  =======================================================================================================
+``ENV_CONTROLLER_API_URL``                             NGINX Controller IP and port
 ``ENV_CONTROLLER_USERNAME``                            NGINX Controller user account with less privilege on Instance Group
 ``ENV_CONTROLLER_PASSWORD``                            NGINX Controller user password
+``ENV_CONTROLLER_LOCATION``                            Location name, same as created on NGINX Controller
+``ENV_CONTROLLER_INSTANCE_NAME``                       Hostname of the NGINX instance
 =====================================================  =======================================================================================================
+
+
+
+
 
