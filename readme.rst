@@ -207,8 +207,8 @@ Variable                                               Description
 
 Script 2 - Monitor 'Scale In' event
 =========================================
-`scale_in_monitor.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/scale_in_monitor.sh>`_ monitors a *Scale In* event.
-When a Scale In occurs, this script is responsible to unregister this instance from NGINX Controller
+`scale_in_monitor.sh <https://github.com/nergalex/nap-azure-vmss/blob/master/scale_in_monitor.sh>`_ monitors a *Scale In* or a *reimage* event.
+When a *Scale In* or a *reimage* event occurs, this script is responsible to unregister this instance from NGINX Controller
 
 Input variables:
 
