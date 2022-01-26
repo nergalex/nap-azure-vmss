@@ -61,8 +61,8 @@ wget -P /etc/yum.repos.d "https://cs.nginx.com/static/files/nginx-plus-7.4.repo"
 wget -P /etc/yum.repos.d "https://cs.nginx.com/static/files/app-protect-7.repo"
 
 # INSTALL NGINX Javascript module needed for APIM #
-echo '*********************** INSTALL NGINX + NGINX Javascript module for APIM ***********************'
-yum -y update --exclude=WALinuxAgent && yum -y install "nginx-plus-${EXTRA_NGINX_PLUS_VERSION}*" "nginx-plus-module-njs-${EXTRA_NGINX_PLUS_VERSION}*"
+echo '*********************** INSTALL NGINX + NGINX Javascript module for APIM + brotli for compression ***********************'
+yum -y update --exclude=WALinuxAgent && yum -y install "nginx-plus-${EXTRA_NGINX_PLUS_VERSION}*" "nginx-plus-module-njs-${EXTRA_NGINX_PLUS_VERSION}*" "nginx-plus-module-brotli"
 systemctl enable nginx.service
 
 # INSTALL NGINX App Protect #
