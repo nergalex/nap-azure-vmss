@@ -96,7 +96,7 @@ echo '*********************** set Controller agent specification ***************
 ### source: https://github.com/nginxinc/docker-nginx-controller/blob/master/centos/nap/entrypoint.sh
 echo " ---> using api_key = ${API_KEY}"
 
-HOSTNAME="$(hostname -f)"
+HOSTNAME="$(hostname -f  | tr '[:upper:]' '[:lower:]')"
 export instance_name=${HOSTNAME%\.*\.*\.*\.*\.*}
 echo " ---> using instance_name = ${instance_name}"
 
