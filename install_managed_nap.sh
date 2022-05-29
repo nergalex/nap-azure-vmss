@@ -113,6 +113,7 @@ echo " ---> using STORE_UUID = ${STORE_UUID}"
 echo '*********************** run NGINX ***********************'
 systemctl start nginx
 echo '*********************** run Controller agent ***********************'
-bash ./install.sh -y --insecure --location-name "${location}" --instance-name "${instance_name}" --instance-group "${instance_group}"
+# ToDo NMS update bash parameters
+# bash ./install.sh -y --insecure --location-name "${location}" --instance-name "${instance_name}" --instance-group "${instance_group}"
 echo '*********************** run App Protect agent ***********************'
 /bin/su -s /bin/bash -c '/opt/app_protect/bin/bd_agent &' nginx
