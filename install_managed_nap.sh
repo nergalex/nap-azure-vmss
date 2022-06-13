@@ -114,6 +114,6 @@ echo '*********************** run NGINX ***********************'
 systemctl start nginx
 echo '*********************** run Controller agent ***********************'
 # ToDo NMS update bash parameters
-# bash ./install.sh -y --insecure --location-name "${location}" --instance-name "${instance_name}" --instance-group "${instance_group}"
+bash ./install.sh -y --insecure --location-name "${location}" --instance-name "${instance_name}" --instance-group "${instance_group}"
 echo '*********************** run App Protect agent ***********************'
 /bin/su -s /bin/bash -c '/opt/app_protect/bin/bd_agent &' nginx
