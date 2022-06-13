@@ -68,7 +68,7 @@ systemctl enable nginx.service
 # INSTALL NGINX App Protect #
 echo '*********************** INSTALL NGINX App Protect ***********************'
 wget -P /etc/yum.repos.d https://cs.nginx.com/static/files/dependencies.repo
-yum -y install app-protect-25+3.671.0 app-protect-attack-signatures
+yum -y install app-protect-26+3.890.0-1.el7.ngx app-protect-attack-signatures
 sed -i "6 a load_module modules/ngx_http_app_protect_module.so;" /etc/nginx/nginx.conf
 
 # UPDATE App Protect Attack Signatures + Threat Campaigns #
