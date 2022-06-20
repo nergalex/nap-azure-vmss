@@ -85,11 +85,10 @@ rm -f /etc/yum.repos.d/nginx-plus-7.4.repo \
 
 # ------------------------------------- INSTALL NGINX Controller agent ------------------------------------- #
 # Controller - GET agent #
-# ToDo NMS
 #echo '*********************** get Controller agent ***********************'
-#curl -k -sS -L https://${EXTRA_NGINX_CONTROLLER_IP}/install/controller-agent > install.sh
-#sed -i 's/^assume_yes=""/assume_yes="-y"/' install.sh
-#sed -i 's,-n "${NGINX_GPGKEY}",true,' install.sh
+curl -k -sS -L https://${EXTRA_NGINX_CONTROLLER_IP}/install/controller-agent > install.sh
+sed -i 's/^assume_yes=""/assume_yes="-y"/' install.sh
+sed -i 's,-n "${NGINX_GPGKEY}",true,' install.sh
 
 # Controller - SET agent specification #
 echo '*********************** set Controller agent specification ***********************'
@@ -114,7 +113,6 @@ echo " ---> using STORE_UUID = ${STORE_UUID}"
 echo '*********************** run NGINX ***********************'
 systemctl start nginx
 echo '*********************** run Controller agent ***********************'
-# ToDo NMS
-# bash ./install.sh -y --insecure --location-name "${location}" --instance-name "${instance_name}" --instance-group "${instance_group}"
+bash ./install.sh -y --insecure --location-name "${location}" --instance-name "${instance_name}" --instance-group "${instance_group}"
 echo '*********************** run App Protect agent ***********************'
 /bin/su -s /bin/bash -c '/opt/app_protect/bin/bd_agent &' nginx
